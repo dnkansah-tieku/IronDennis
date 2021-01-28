@@ -3,33 +3,41 @@
 # sort the result in lexicographical order of the full names, ignoring case. If two or more customers have the same full name, sort those results by ID, ascending.
 
 
-select ID, first_name, last_name, length(first_name)+ length(last_name) as LENGTH from lab_work.customer 
-where (length(first_name)+ length(last_name)) <12
-order by length asc, first_name, last_name, ID asc
-limit 10;
+SELECT 
+    ID, CONCAT(first_name, ' ', last_name) AS 'Customer Name'
+FROM
+    lab_work.customer
+WHERE
+    (LENGTH(first_name) + LENGTH(last_name)) < 12
+ORDER BY first_name , last_name , ID ASC
+LIMIT 10;
 
 
 #Given two tables,\'a0Employee\'a0and\'a0Department, generate a summary of how many employees are in each department. Each department should be listed, 
 #whether they currently have any employees or not. The results should be sorted from high to low by number of employees, and then alphabetically by department
 # when departments have the same number of employees. The results should list the department name followed by the employee count. The column names are not tested, so use whatever is appropriate.\
 
-select depart.name as 'Department Name', count(*) as 'No of Employees'
-from lab_work.employee as Emply
-right join lab_work.department as depart
-on emply.dept_id = depart.id
-group by depart.name
-order by count(*) desc, depart.name;
+SELECT 
+    depart.name AS 'Department Name',
+    COUNT(*) AS 'No of Employees'
+FROM
+    lab_work.employee AS Emply
+        RIGHT JOIN
+    lab_work.department AS depart ON emply.dept_id = depart.id
+GROUP BY depart.name
+ORDER BY COUNT(*) DESC , depart.name;
 
 # There are two data tables with employee information: EMPLOYEE and EMPLOYEE_UIN  Query the tables to generate a list of all employees who are less than 25 years old first in order of NAMEthen of ID 
 # both ascending. The result should include the followed by the NAME.
 
-select name, dept_id
-from employee as X 
-inner join employee_uin as Y
-on x.id = y.id;
-
-
-
+select * from employ_ee
+inner join employee_uin using (id)
+ where age < 25
+ order by name, ID asc;
+ 
+## A company maintains EMPLOYEE table with information for each of their employees. Write a query to produce a list containing two columns. 
+## The first column should include the name of an employee who earns less than some other employee. The second column should contain the name of a higher earning employee.
+## All combinations of lesser and greater earning employees should be included. Sort ascending, first by the lower earning employee's ID, then by the higher earning employee's SALARY.
 
 
 
